@@ -148,7 +148,48 @@ public class MiniNet {
                     System.out.println("Deleted Successfully");
                 }
             }
-         
+           else if(choice==4)
+            {
+
+                String user1=null;
+                do {
+                    System.out.println("Enter the Username of first Person");
+                    user1=scWhole.nextLine();
+                    if(userController.checkUserId(user1))
+                    {
+                        System.out.println("Invalid Id. Please enter a valid ID");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }while(true);
+                String user2=null;
+                do {
+                    System.out.println("Enter the Username of second Parent");
+                    user2=scWhole.nextLine();
+                    if(userController.checkUserId(user2))
+                    {
+                        System.out.println("Invalid Id. Please enter a valid ID");
+
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }while(true);
+                if(userController.checkFriends(user1,user2))
+                {
+                    System.out.println("The users are connected");
+                }
+                else
+                {
+                    System.out.println("The users are not connected");
+
+                }
+
+
+            }
             else
             {
                 return;

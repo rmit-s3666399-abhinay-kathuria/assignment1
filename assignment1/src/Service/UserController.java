@@ -46,7 +46,11 @@ public class UserController {
         userDao.deleteUser(uName);
     }
 
-   
+    public boolean checkFriends(String user1, String user2) {
+        UserProfileDAO userDao=new UserProfileDAO();
+        return userDao.checkFriends(user1,user2);
+    }
+
     public void createTable() {
         UserProfileDAO userDao=new UserProfileDAO();
         userDao.createTable();

@@ -282,7 +282,44 @@ public class UserProfileDAO {
 
     }
 
-  
+    public boolean checkFriends(String user1, String user2) {
+
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+
+        try {
+            String query="select count(*) from connections where (lower(name)=? and lower(friend_name)=?) or (lower(name)=? and lower(friend_name)=?)";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,user1.toLowerCase());
+            pst.setString(2,user2.toLowerCase());
+            pst.setString(3,user2.toLowerCase());
+            pst.setString(4,user1.toLowerCase());
+            ResultSet rs=pst.executeQuery();
+            if(rs.next())
+            {
+                if(rs.getInt(1)>0) {
+
+                    return true;
+                }
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+   
+
     public void createTable() {
         Connection conn= SQLiteJDBCDriverConnection.connect();
        if(conn==null)
