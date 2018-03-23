@@ -5,11 +5,12 @@ public class Dependent extends User {
    protected String parent_id1;
     protected String parent_id2;
 
-    public Dependent(String user_id, String fName, String lName, int age, String parent_id1, String parent_id2) {
-        super(user_id, fName, lName, age);
+    public Dependent(String name, int age, String parent_id1, String parent_id2) {
+        super(name, age);
         this.parent_id1 = parent_id1;
         this.parent_id2 = parent_id2;
     }
+
     public Dependent()
     {
 
