@@ -66,7 +66,10 @@ public class UserController {
         return userDao.findParents(user1);
     }
 
- 
+    public ArrayList<String> findChildren(String user1) {
+        UserProfileDAO userDao=new UserProfileDAO();
+        return userDao.findChildren(user1);
+    }
 
     public int userAge(String user1) {
         UserProfileDAO userDao=new UserProfileDAO();
@@ -81,6 +84,10 @@ public class UserController {
         userDao.createTable();
     }
 
+    public ArrayList<User> listAllUsers() {
+        UserProfileDAO userDao=new UserProfileDAO();
+        return userDao.listAllUsers();
+    }
 
    
 }

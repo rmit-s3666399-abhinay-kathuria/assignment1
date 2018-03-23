@@ -281,7 +281,53 @@ public class MiniNet {
                 }
 
             }
-           
+             else if(choice==7)
+            {
+                String user1=null;
+                do {
+                    System.out.println("Enter the Username");
+                    user1=scWhole.nextLine();
+                    if(userController.checkUserId(user1))
+                    {
+                        System.out.println("Invalid Id. Please enter a valid ID");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }while(true);
+                if(userController.isDependent(user1))
+                {
+                    System.out.println("Sorry! The user is a dependent");
+                }
+                else
+                {
+                    ArrayList<String> parents = new ArrayList<>();
+                    parents= userController.findChildren(user1);
+                    if(parents.size()>0)
+                        System.out.println(parents.toString());
+                    else
+                        System.out.println("No children exists for the parent");
+                }
+
+            }
+            else if(choice==8)
+            {
+                    ArrayList<User> userList =new ArrayList<>();
+                    userList= userController.listAllUsers();
+                    if(userList.size()>0)
+                    {
+                        System.out.println("Name    " +" Age  " +"Status      "+ "Profile Picture         " );
+                        for(User user:userList)
+                        {
+                            System.out.println(user.getName() +"  " +user.getAge() + "   "+user.getStatus() +"  " + user.getDisplay_picture());
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("No User found");
+                    }
+            }
             
             else
             {

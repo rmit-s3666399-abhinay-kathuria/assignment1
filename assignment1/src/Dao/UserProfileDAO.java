@@ -411,7 +411,36 @@ public class UserProfileDAO {
         return parentList;
     }
 
-   
+    public ArrayList<String> findChildren(String user1) {
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+        ArrayList<String> cList =new ArrayList<>();
+        try {
+            String query="select name from dependents  where lower(parent_name1)=? or lower(parent_name2)=?" ;
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,user1.toLowerCase());
+            pst.setString(2,user1.toLowerCase());
+            ResultSet rs=pst.executeQuery();
+            while (rs.next())
+            {
+                cList.add(rs.getString(1));
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return cList;
+    }
+
     public int userAge(String user1) {
         Connection conn= SQLiteJDBCDriverConnection.connect();
 
@@ -492,7 +521,58 @@ public class UserProfileDAO {
         }
     }
 
-   
+    public ArrayList<User> listAllUsers() {
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+        ArrayList<User> userList=new ArrayList<User>();
+        try {
+            String query="select * from User_Profile";
+            PreparedStatement pst=conn.prepareStatement(query);
+            ResultSet rs=pst.executeQuery();
+
+            while(rs.next())
+            {
+                User user=null;
+
+
+                if( rs.getInt(3)>16)
+                {
+                    user=new Adults();
+                    user.setName(rs.getString(1));
+                    user.setStatus(rs.getString(2));
+                    user.setAge(rs.getInt(3));
+                    user.setDisplay_picture(rs.getString(4));
+
+                }
+                else
+                {
+                    user=new Dependent();
+                    user.setName(rs.getString(1));
+                    user.setStatus(rs.getString(2));
+                    user.setAge(rs.getInt(3));
+                    user.setDisplay_picture(rs.getString(4));
+                }
+                userList.add(user);
+
+
+            }
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return userList;
+
+    }
 
     
 }
