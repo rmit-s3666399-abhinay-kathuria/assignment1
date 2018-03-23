@@ -51,8 +51,36 @@ public class UserController {
         return userDao.checkFriends(user1,user2);
     }
 
+    public void createConnection(String user1, String user2) {
+        UserProfileDAO userDao=new UserProfileDAO();
+         userDao.createConnection(user1,user2);
+    }
+
+    public boolean isDependent(String user1) {
+        UserProfileDAO userDao=new UserProfileDAO();
+        return userDao.isDependent(user1);
+    }
+
+    public ArrayList<String> findParents(String user1) {
+        UserProfileDAO userDao=new UserProfileDAO();
+        return userDao.findParents(user1);
+    }
+
+ 
+
+    public int userAge(String user1) {
+        UserProfileDAO userDao=new UserProfileDAO();
+        return userDao.userAge(user1);
+
+    }
+
+
+
     public void createTable() {
         UserProfileDAO userDao=new UserProfileDAO();
         userDao.createTable();
     }
+
+
+   
 }

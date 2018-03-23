@@ -190,6 +190,99 @@ public class MiniNet {
 
 
             }
+             else if(choice==5)
+            {
+                String user1=null;
+                do {
+                    System.out.println("Enter the Username of first Person");
+                    user1=scWhole.nextLine();
+                    if(userController.checkUserId(user1))
+                    {
+                        System.out.println("Invalid Id. Please enter a valid ID");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }while(true);
+                String user2=null;
+                do {
+                    System.out.println("Enter the Username of second Person");
+                    user2=scWhole.nextLine();
+                    if(userController.checkUserId(user2))
+                    {
+                        System.out.println("Invalid Id. Please enter a valid ID");
+
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }while(true);
+                if(userController.isDependent(user1)&&userController.isDependent(user2))
+                {
+                    ArrayList<String> parents = new ArrayList<>();
+                    parents= userController.findParents(user1);
+
+                    Collections.sort(parents);
+                    ArrayList<String> parents2 = new ArrayList<>();
+                    parents2= userController.findParents(user2);
+                    Collections.sort(parents2);
+                    if(parents.equals(parents2))
+                    {
+                        System.out.println("Can't Connect! Does Not meet requirements for connecting dependents!");
+
+                    }
+                    else {
+                        int ageUser1 = userController.userAge(user1);
+                        int ageUser2 = userController.userAge(user2);
+                        if (ageUser1 <= 2 || ageUser2 <= 2) {
+                            System.out.println("Can't Connect! Does Not meet requirements for connecting dependents!");
+
+                        } else if (Math.abs(ageUser1 - ageUser2) < 3) {
+                            userController.createConnection(user1, user2);
+                            System.out.println("Connected!");
+                        }
+                    }
+                }
+                else if(!userController.isDependent(user1)&&!userController.isDependent(user2)) {
+                    userController.createConnection(user1, user2);
+                    System.out.println("Connected!");
+                }
+                else
+                {
+                    System.out.println("Can't Connect! Does Not meet requirements for connecting dependents!");
+                }
+            }
+          else if(choice==6)
+            {
+                String user1=null;
+                do {
+                    System.out.println("Enter the Username of the dependent");
+                    user1=scWhole.nextLine();
+                    if(userController.checkUserId(user1))
+                    {
+                        System.out.println("Invalid Id. Please enter a valid ID");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }while(true);
+                if(!userController.isDependent(user1))
+                {
+                    System.out.println("Sorry! The user is not a dependent");
+                }
+                else
+                {
+                    ArrayList<String> parents = new ArrayList<>();
+                    parents= userController.findParents(user1);
+                    System.out.println(parents.toString());
+                }
+
+            }
+           
+            
             else
             {
                 return;

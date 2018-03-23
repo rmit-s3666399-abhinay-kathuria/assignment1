@@ -318,7 +318,131 @@ public class UserProfileDAO {
         return false;
     }
 
+    public void createConnection(String user1, String user2) {
+
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+
+        try {
+            String query="insert into connections values (?,?) ";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,user1);
+            pst.setString(2,user2);
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public boolean isDependent(String user1) {
+
+        Connection conn=SQLiteJDBCDriverConnection.connect();
+
+        try {
+            String query="select age from User_Profile where lower(name)= ?";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,user1.toLowerCase());
+            ResultSet rs=pst.executeQuery();
+            if(rs.next())
+            {
+                if(rs.getInt(1)>=16)
+                    return false;
+            }
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
+    public ArrayList<String> findParents(String user1) {
+
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+        ArrayList<String> parentList =new ArrayList<>();
+        try {
+            String query="select parent_name1 from dependents d where lower(d.name)=?\n" +
+                    "UNION\n" +
+                    "select parent_name2 from dependents d where lower(d.name)=?\n";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,user1.toLowerCase());
+            pst.setString(2,user1.toLowerCase());
+            ResultSet rs=pst.executeQuery();
+           while (rs.next())
+            {
+                parentList.add(rs.getString(1));
+            }
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return parentList;
+    }
+
    
+    public int userAge(String user1) {
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+
+        try {
+            String query="select age from User_Profile where lower(name)= ?";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,user1.toLowerCase());
+            ResultSet rs=pst.executeQuery();
+            if(rs.next())
+            {
+               return rs.getInt(1);
+            }
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+
+    }
+
 
     public void createTable() {
         Connection conn= SQLiteJDBCDriverConnection.connect();
@@ -369,5 +493,7 @@ public class UserProfileDAO {
     }
 
    
+
+    
 }
 
