@@ -333,11 +333,20 @@ public class MiniNet {
                 userList= userController.listAllUsers();
                 if(userList.size()>0)
                 {
-                    System.out.println("Name    " +" Age  " +"Status      "+ "Profile Picture         " );
+                    System.out.printf("%-30s","Name");
+                    System.out.printf("%-20s","Age");
+                    System.out.printf("%-30s","Status");
+                    System.out.printf("%-30s","Profile Picture");
+
                     for(User user:userList)
                     {
-                        System.out.println(user.getName() +"  " +user.getAge() + "   "+user.getStatus() +"  " + user.getDisplay_picture());
+                        System.out.println();
+                        System.out.printf("%-30s",user.getName());
+                        System.out.printf("%-20s",user.getAge());
+                        System.out.printf("%-30s",user.getStatus());
+                        System.out.printf("%-30s",user.getDisplay_picture());
                     }
+                    System.out.println();
                 }
                 else
                 {
