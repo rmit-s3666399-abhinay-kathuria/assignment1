@@ -123,7 +123,32 @@ public class MiniNet {
                 ArrayList<String> friends = userController.findFriends(searchUser.getName());
                 System.out.println("Friend List");
                 System.out.println(friends);
-             }
+                }
+            else if(choice==3)
+            {
+                String uName=null;
+                do {
+                    System.out.println("Enter the user id for the user you want to delete");
+                    uName=scWhole.nextLine();
+                    if(userController.checkUserId(uName))
+                    {
+                        System.out.println("Invalid User Id!");
+
+                    }
+                    else
+                        break;
+                }while (true);
+                if(!userController.checkInDependents(uName))
+                {
+                    System.out.println("Dependents exist for the connection. Can't Delete");
+                }
+                else
+                {
+                    userController.deleteUser(uName);
+                    System.out.println("Deleted Successfully");
+                }
+            }
+         
             else
             {
                 return;

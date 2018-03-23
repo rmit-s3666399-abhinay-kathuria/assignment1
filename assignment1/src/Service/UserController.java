@@ -7,11 +7,6 @@ import java.util.ArrayList;
 
 public class UserController {
 
-	public void createTable() {
-        UserProfileDAO userDao=new UserProfileDAO();
-        userDao.createTable();
-    }
-	
     public void createNewUser(User newUser)
     {
 
@@ -46,4 +41,14 @@ public class UserController {
         return userDao.checkInDependents(userParent1);
     }
 
+    public void deleteUser(String uName) {
+        UserProfileDAO userDao=new UserProfileDAO();
+        userDao.deleteUser(uName);
+    }
+
+   
+    public void createTable() {
+        UserProfileDAO userDao=new UserProfileDAO();
+        userDao.createTable();
+    }
 }

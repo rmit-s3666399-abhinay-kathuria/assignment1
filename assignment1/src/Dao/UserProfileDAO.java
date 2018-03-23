@@ -244,7 +244,45 @@ public class UserProfileDAO {
         return true;
     }
 
-   
+    public void deleteUser(String uName) {
+
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+
+        try {
+            String query="delete from connections where lower(name)=? or lower(friend_name) = ? ";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,uName.toLowerCase());
+            pst.setString(2,uName.toLowerCase());
+            pst.executeUpdate();
+
+            query="delete from dependents where lower(name)=? ";
+            pst=conn.prepareStatement(query);
+            pst.setString(1,uName.toLowerCase());
+            pst.executeUpdate();
+
+
+             query="delete from User_Profile where lower(name)=? ";
+             pst=conn.prepareStatement(query);
+            pst.setString(1,uName.toLowerCase());
+            pst.executeUpdate();
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+  
     public void createTable() {
         Connection conn= SQLiteJDBCDriverConnection.connect();
        if(conn==null)
@@ -293,6 +331,6 @@ public class UserProfileDAO {
         }
     }
 
-
+   
 }
 
