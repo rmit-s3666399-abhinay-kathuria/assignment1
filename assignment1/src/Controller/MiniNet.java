@@ -1,3 +1,12 @@
+/**
+ * The Mini net class is the driver class which is used for the social network project.
+ * The class allows you to add, delete , edit users as well be friends with other users
+ *It communicates with the service class to store and retrieve data from the local db.
+ * @author  Abhinay Kathuria Achal Vaish
+ * @version 1.0
+ * @since   2018-03-23
+ */
+
 package Controller;
 
 import Bean.*;
@@ -9,6 +18,13 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MiniNet {
+
+
+    /**
+     * This method is the main method which displays
+     * the menu and based on the user input
+     * performs the desired function
+     */
 
     public static void main(String args[])
     {
@@ -33,7 +49,7 @@ public class MiniNet {
             System.out.println("10. Exit");
             int choice=0;
             try {
-                 choice = sc.nextInt();
+                choice = sc.nextInt();
             }
             catch(InputMismatchException e)
             {
@@ -45,7 +61,7 @@ public class MiniNet {
                 System.out.println("Enter Name");
                 String name=null;
                 sc.nextLine();
-                 name=scWhole.nextLine();
+                name=scWhole.nextLine();
 
                 System.out.println("Enter the Age");
                 int age=sc.nextInt();
@@ -123,7 +139,7 @@ public class MiniNet {
                 ArrayList<String> friends = userController.findFriends(searchUser.getName());
                 System.out.println("Friend List");
                 System.out.println(friends);
-                }
+            }
             else if(choice==3)
             {
                 String uName=null;
@@ -148,7 +164,7 @@ public class MiniNet {
                     System.out.println("Deleted Successfully");
                 }
             }
-           else if(choice==4)
+            else if(choice==4)
             {
 
                 String user1=null;
@@ -190,7 +206,7 @@ public class MiniNet {
 
 
             }
-             else if(choice==5)
+            else if(choice==5)
             {
                 String user1=null;
                 do {
@@ -254,7 +270,7 @@ public class MiniNet {
                     System.out.println("Can't Connect! Does Not meet requirements for connecting dependents!");
                 }
             }
-          else if(choice==6)
+            else if(choice==6)
             {
                 String user1=null;
                 do {
@@ -281,7 +297,7 @@ public class MiniNet {
                 }
 
             }
-             else if(choice==7)
+            else if(choice==7)
             {
                 String user1=null;
                 do {
@@ -313,22 +329,44 @@ public class MiniNet {
             }
             else if(choice==8)
             {
-                    ArrayList<User> userList =new ArrayList<>();
-                    userList= userController.listAllUsers();
-                    if(userList.size()>0)
+                ArrayList<User> userList =new ArrayList<>();
+                userList= userController.listAllUsers();
+                if(userList.size()>0)
+                {
+                    System.out.println("Name    " +" Age  " +"Status      "+ "Profile Picture         " );
+                    for(User user:userList)
                     {
-                        System.out.println("Name    " +" Age  " +"Status      "+ "Profile Picture         " );
-                        for(User user:userList)
-                        {
-                            System.out.println(user.getName() +"  " +user.getAge() + "   "+user.getStatus() +"  " + user.getDisplay_picture());
-                        }
+                        System.out.println(user.getName() +"  " +user.getAge() + "   "+user.getStatus() +"  " + user.getDisplay_picture());
+                    }
+                }
+                else
+                {
+                    System.out.println("No User found");
+                }
+            }
+            else if(choice == 9)
+            {
+                String user1=null;
+                do {
+                    System.out.println("Enter the Username");
+                    user1=scWhole.nextLine();
+                    if(userController.checkUserId(user1))
+                    {
+                        System.out.println("Invalid Id. Please enter a valid ID");
                     }
                     else
                     {
-                        System.out.println("No User found");
+                        break;
                     }
+                }while(true);
+                User updateUser=userController.searchUser(user1);
+                System.out.println("Enter the Status");
+                updateUser.setStatus(scWhole.nextLine());
+                System.out.println("Enter the Display Profile");
+                updateUser.setDisplay_picture(scWhole.nextLine());
+                userController.updateUser(updateUser);
+                System.out.println("Successfully Updated!");
             }
-            
             else
             {
                 return;

@@ -1,3 +1,13 @@
+/**
+ * The UserProfileDAO is the Database Object class which provides commuincation with the database.
+ * The class talks with the local db to fetch and store data.
+ * @author  Abhinay Kathuria Achal Vaish
+ * @version 1.0
+ * @since   2018-03-23
+ */
+
+
+
 package Dao;
 
 import Bean.*;
@@ -11,6 +21,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserProfileDAO {
+
+    /**
+     * This method is create a new user.
+     * In case of dependent it adds the parents detail into the table storing those values.
+     * @param newUser The user to be created is passed.
+     */
 
     public void createNewUser(User newUser) {
 
@@ -60,6 +76,12 @@ public class UserProfileDAO {
         }
     }
 
+    /**
+     * This method is check if the user name is unique.
+     * @param user_id The Name to be checked is passed.
+     * @return boolean This returns false if it is not unique otherwise returns true.
+     */
+
     public boolean checkUserId(String user_id) {
 
         Connection conn= SQLiteJDBCDriverConnection.connect();
@@ -91,6 +113,13 @@ public class UserProfileDAO {
         }
         return true;
     }
+
+    /**
+     * This method is check if the combination of parent id's is mutually exclusive to create a dependent.
+     * @param userParent1 The Name of first parent is passed.
+     * @param userParent2 The Name of secondd parent is passed.
+     * @return boolean This returns false if they are not mutually exclusive otherwise returns true.
+     */
 
     public boolean checkParentFrDependent(String userParent1, String userParent2) {
 
@@ -125,6 +154,12 @@ public class UserProfileDAO {
         }
         return true;
     }
+
+    /**
+     * This method is to search a particular user in the database.
+     * @param name The Name of user is passed.
+     * @return User This returns the details of user if found otherwise returns null.
+     */
 
     public User searchUser(String name) {
 
@@ -176,6 +211,12 @@ public class UserProfileDAO {
         return user;
     }
 
+    /**
+     * This method is to find friends of a particular user.
+     * @param name The Name of user is passed.
+     * @return ArrayList<String> This returns the the list of friends of the user.
+     */
+
     public ArrayList<String> findFriends(String name) {
 
         Connection conn= SQLiteJDBCDriverConnection.connect();
@@ -190,7 +231,7 @@ public class UserProfileDAO {
             ResultSet rs=pst.executeQuery();
             while(rs.next())
             {
-               friendList.add( rs.getString(1));
+                friendList.add( rs.getString(1));
             }
 
 
@@ -209,6 +250,12 @@ public class UserProfileDAO {
         }
         return friendList;
     }
+
+    /**
+     * This method is to find if a parent has dependents.
+     * @param userParent1 The Name of parent is passed.
+     * @return boolean This returns false if there are dependents otherwise true.
+     */
 
     public boolean checkInDependents(String userParent1) {
 
@@ -244,6 +291,11 @@ public class UserProfileDAO {
         return true;
     }
 
+    /**
+     * This method is to delete the user from the network.
+     * @param uName The Name of user is passed.
+     */
+
     public void deleteUser(String uName) {
 
         Connection conn= SQLiteJDBCDriverConnection.connect();
@@ -261,8 +313,8 @@ public class UserProfileDAO {
             pst.executeUpdate();
 
 
-             query="delete from User_Profile where lower(name)=? ";
-             pst=conn.prepareStatement(query);
+            query="delete from User_Profile where lower(name)=? ";
+            pst=conn.prepareStatement(query);
             pst.setString(1,uName.toLowerCase());
             pst.executeUpdate();
 
@@ -281,6 +333,14 @@ public class UserProfileDAO {
         }
 
     }
+
+    /**
+     * This method is to find if two users are friends.
+     * @param user1 The Name of user1 is passed.
+     * @param user2 The Name of user2 is passed.
+     * @return boolean This returns true if they are friends otherwise false.
+     */
+
 
     public boolean checkFriends(String user1, String user2) {
 
@@ -318,6 +378,12 @@ public class UserProfileDAO {
         return false;
     }
 
+    /**
+     * This method is to connect two users as friends.
+     * @param user1 The Name of user1 is passed.
+     * @param user2 The Name of user2 is passed.
+     */
+
     public void createConnection(String user1, String user2) {
 
         Connection conn= SQLiteJDBCDriverConnection.connect();
@@ -344,6 +410,12 @@ public class UserProfileDAO {
         }
 
     }
+
+    /**
+     * This method is to check if a user is a Dependent.
+     * @param user1 The Name of user is passed.
+     * @return boolean This returns true if it is a Dependent otherwise false.
+     */
 
     public boolean isDependent(String user1) {
 
@@ -377,6 +449,12 @@ public class UserProfileDAO {
         return true;
     }
 
+    /**
+     * This method is to find the name of parents for a dependent.
+     * @param user1 The Name of user is passed.
+     * @return ArrayList<String> This returns the parents.
+     */
+
     public ArrayList<String> findParents(String user1) {
 
         Connection conn= SQLiteJDBCDriverConnection.connect();
@@ -389,7 +467,7 @@ public class UserProfileDAO {
             pst.setString(1,user1.toLowerCase());
             pst.setString(2,user1.toLowerCase());
             ResultSet rs=pst.executeQuery();
-           while (rs.next())
+            while (rs.next())
             {
                 parentList.add(rs.getString(1));
             }
@@ -410,6 +488,13 @@ public class UserProfileDAO {
         }
         return parentList;
     }
+
+
+    /**
+     * This method is to find the name of children of a parent.
+     * @param user1 The Name of user is passed.
+     * @return ArrayList<String> This returns the list of children if they exist.
+     */
 
     public ArrayList<String> findChildren(String user1) {
         Connection conn= SQLiteJDBCDriverConnection.connect();
@@ -441,6 +526,11 @@ public class UserProfileDAO {
         return cList;
     }
 
+    /**
+     * This method is to find the age of a user.
+     * @param user1 The Name of user is passed.
+     * @return int This returns the age of the user.
+     */
     public int userAge(String user1) {
         Connection conn= SQLiteJDBCDriverConnection.connect();
 
@@ -451,7 +541,7 @@ public class UserProfileDAO {
             ResultSet rs=pst.executeQuery();
             if(rs.next())
             {
-               return rs.getInt(1);
+                return rs.getInt(1);
             }
 
 
@@ -472,11 +562,14 @@ public class UserProfileDAO {
 
     }
 
+    /**
+     * This method is used to create the tables in the database.
+     */
 
     public void createTable() {
         Connection conn= SQLiteJDBCDriverConnection.connect();
-       if(conn==null)
-           return;
+        if(conn==null)
+            return;
         try {
             String query="Create table if not exists User_Profile\n" +
                     "(\n" +
@@ -489,7 +582,7 @@ public class UserProfileDAO {
             PreparedStatement pst=conn.prepareStatement(query);
             pst.execute();
 
-           String query1=" create table if not exists connections\n" +
+            String query1=" create table if not exists connections\n" +
                     "(\n" +
                     "Name varchar2(200),\n" +
                     "friend_name varchar2(200),\n" +
@@ -501,7 +594,7 @@ public class UserProfileDAO {
             PreparedStatement pst1=conn.prepareStatement(query1);
             pst1.execute();
 
-           String query2=" create table if not exists dependents\n" +
+            String query2=" create table if not exists dependents\n" +
                     "(\n" +
                     "Name varchar2(200),\n" +
                     "parent_name1 varchar2(200),\n" +
@@ -520,6 +613,11 @@ public class UserProfileDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * This method is to find the list of all users.
+     * @return ArrayList<User> This returns the list of all users in the network.
+     */
 
     public ArrayList<User> listAllUsers() {
         Connection conn= SQLiteJDBCDriverConnection.connect();
@@ -574,6 +672,36 @@ public class UserProfileDAO {
 
     }
 
-    
+    /**
+     * This method is to find the update the user.
+     * @param updateUser The user to be updated is passed.
+     */
+    public void updateUser(User updateUser) {
+
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+
+        try {
+            String query="update  user_profile set status=? , display_image=? where lower(Name)=?\n";
+
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1, updateUser.getStatus());
+            pst.setString(2, updateUser.getDisplay_picture());
+            pst.setString(3, updateUser.getName().toLowerCase());
+            int rs=pst.executeUpdate();
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
 
