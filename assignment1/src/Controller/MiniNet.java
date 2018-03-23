@@ -30,11 +30,12 @@ public class MiniNet {
     {
         UserController userController=new UserController();
         userController.createTable();
-        while(true)
-        {
+       try
+       {
+        while(true) {
 
             Scanner sc = new Scanner(System.in);
-            Scanner scWhole= new Scanner(System.in);
+            Scanner scWhole = new Scanner(System.in);
             System.out.println("MiniNet Menu");
             System.out.println("==============================================");
             System.out.println("1. Add New User");
@@ -47,88 +48,68 @@ public class MiniNet {
             System.out.println("8. List All Users");
             System.out.println("9. Update Details of a user");
             System.out.println("10. Exit");
-            int choice=0;
+            int choice = 0;
             try {
                 choice = sc.nextInt();
-            }
-            catch(InputMismatchException e)
-            {
+            } catch (InputMismatchException e) {
                 System.out.println("Incorrect Input");
             }
-            if(choice ==1 )
-            {
+            if (choice == 1) {
                 User newUser = null;
                 System.out.println("Enter Name");
-                String name=null;
+                String name = null;
                 sc.nextLine();
-                name=scWhole.nextLine();
+                name = scWhole.nextLine();
 
                 System.out.println("Enter the Age");
-                int age=sc.nextInt();
-                if(age<16)
-                {
-                    String userParent1=null;
+                int age = sc.nextInt();
+                if (age < 16) {
+                    String userParent1 = null;
                     do {
                         System.out.println("Enter the Name of first Parent");
-                        userParent1=scWhole.nextLine();
-                        if(userController.checkUserId(userParent1))
-                        {
+                        userParent1 = scWhole.nextLine();
+                        if (userController.checkUserId(userParent1)) {
                             System.out.println("Invalid Parent Name. Please enter a valid Name");
-                        }
-                        else
-                        {
+                        } else {
                             break;
                         }
-                    }while(true);
-                    String userParent2=null;
+                    } while (true);
+                    String userParent2 = null;
                     do {
                         System.out.println("Enter the Name of second Parent");
-                        userParent2=scWhole.nextLine();
-                        if(userController.checkUserId(userParent2))
-                        {
+                        userParent2 = scWhole.nextLine();
+                        if (userController.checkUserId(userParent2)) {
                             System.out.println("Invalid Parent Name. Please enter a valid Name");
-                        }
-                        else
-                        {
+                        } else {
                             break;
                         }
-                    }while(true);
-                    if(!userController.checkParentFrDependent(userParent1,userParent2)||(!userController.checkParentFrDependent(userParent2,userParent1)))
-                    {
+                    } while (true);
+                    if (!userController.checkParentFrDependent(userParent1, userParent2) || (!userController.checkParentFrDependent(userParent2, userParent1))) {
                         System.out.println("Parents are not mutually exclusive. Please check");
                         continue;
                     }
-                    newUser=new Dependent(name,age,userParent1,userParent2);
-                }
-                else
-                {
-                    newUser=new Adults(name,age);
+                    newUser = new Dependent(name, age, userParent1, userParent2);
+                } else {
+                    newUser = new Adults(name, age);
                 }
                 System.out.println("Enter the Status:");
                 newUser.setStatus(scWhole.nextLine());
                 System.out.println("Enter the Display Image Path");
                 newUser.setDisplay_picture(scWhole.nextLine());
-                if(userController.checkUserId(newUser.getName()))
-                {
+                if (userController.checkUserId(newUser.getName())) {
                     userController.createNewUser(newUser);
                     System.out.println("User Successfully Created ");
-                }
-                else
-                {
+                } else {
                     System.out.println("User Name Already Exists . Please Use a unique User Name");
                 }
 
-            }
-            else if(choice==2)
-            {
+            } else if (choice == 2) {
                 System.out.println("Enter the name to be searched");
-                String name= scWhole.nextLine();
+                String name = scWhole.nextLine();
                 User searchUser;
                 searchUser = userController.searchUser(name);
-                if(searchUser!=null) {
-                }
-                else
-                {
+                if (searchUser != null) {
+                } else {
                     System.out.println("No User found!");
                     continue;
                 }
@@ -139,117 +120,88 @@ public class MiniNet {
                 ArrayList<String> friends = userController.findFriends(searchUser.getName());
                 System.out.println("Friend List");
                 System.out.println(friends);
-            }
-            else if(choice==3)
-            {
-                String uName=null;
+            } else if (choice == 3) {
+                String uName = null;
                 do {
                     System.out.println("Enter the user id for the user you want to delete");
-                    uName=scWhole.nextLine();
-                    if(userController.checkUserId(uName))
-                    {
+                    uName = scWhole.nextLine();
+                    if (userController.checkUserId(uName)) {
                         System.out.println("Invalid User Id!");
 
-                    }
-                    else
+                    } else
                         break;
-                }while (true);
-                if(!userController.checkInDependents(uName))
-                {
+                } while (true);
+                if (!userController.checkInDependents(uName)) {
                     System.out.println("Dependents exist for the connection. Can't Delete");
-                }
-                else
-                {
+                } else {
                     userController.deleteUser(uName);
                     System.out.println("Deleted Successfully");
                 }
-            }
-            else if(choice==4)
-            {
+            } else if (choice == 4) {
 
-                String user1=null;
+                String user1 = null;
                 do {
                     System.out.println("Enter the Username of first Person");
-                    user1=scWhole.nextLine();
-                    if(userController.checkUserId(user1))
-                    {
+                    user1 = scWhole.nextLine();
+                    if (userController.checkUserId(user1)) {
                         System.out.println("Invalid Id. Please enter a valid ID");
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
-                }while(true);
-                String user2=null;
+                } while (true);
+                String user2 = null;
                 do {
                     System.out.println("Enter the Username of second Parent");
-                    user2=scWhole.nextLine();
-                    if(userController.checkUserId(user2))
-                    {
+                    user2 = scWhole.nextLine();
+                    if (userController.checkUserId(user2)) {
                         System.out.println("Invalid Id. Please enter a valid ID");
 
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
-                }while(true);
-                if(userController.checkFriends(user1,user2))
-                {
+                } while (true);
+                if (userController.checkFriends(user1, user2)) {
                     System.out.println("The users are connected");
-                }
-                else
-                {
+                } else {
                     System.out.println("The users are not connected");
 
                 }
 
 
-            }
-            else if(choice==5)
-            {
-                String user1=null;
+            } else if (choice == 5) {
+                String user1 = null;
                 do {
                     System.out.println("Enter the Username of first Person");
-                    user1=scWhole.nextLine();
-                    if(userController.checkUserId(user1))
-                    {
+                    user1 = scWhole.nextLine();
+                    if (userController.checkUserId(user1)) {
                         System.out.println("Invalid Id. Please enter a valid ID");
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
-                }while(true);
-                String user2=null;
+                } while (true);
+                String user2 = null;
                 do {
                     System.out.println("Enter the Username of second Person");
-                    user2=scWhole.nextLine();
-                    if(userController.checkUserId(user2))
-                    {
+                    user2 = scWhole.nextLine();
+                    if (userController.checkUserId(user2)) {
                         System.out.println("Invalid Id. Please enter a valid ID");
 
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
-                }while(true);
-                if(userController.isDependent(user1)&&userController.isDependent(user2))
-                {
+                } while (true);
+                if (userController.isDependent(user1) && userController.isDependent(user2)) {
                     ArrayList<String> parents = new ArrayList<>();
-                    parents= userController.findParents(user1);
+                    parents = userController.findParents(user1);
 
                     Collections.sort(parents);
                     ArrayList<String> parents2 = new ArrayList<>();
-                    parents2= userController.findParents(user2);
+                    parents2 = userController.findParents(user2);
                     Collections.sort(parents2);
-                    if(parents.equals(parents2))
-                    {
+                    if (parents.equals(parents2)) {
                         System.out.println("Can't Connect! Does Not meet requirements for connecting dependents!");
 
-                    }
-                    else {
+                    } else {
                         int ageUser1 = userController.userAge(user1);
                         int ageUser2 = userController.userAge(user2);
                         if (ageUser1 <= 2 || ageUser2 <= 2) {
@@ -260,127 +212,104 @@ public class MiniNet {
                             System.out.println("Connected!");
                         }
                     }
-                }
-                else if(!userController.isDependent(user1)&&!userController.isDependent(user2)) {
+                } else if (!userController.isDependent(user1) && !userController.isDependent(user2)) {
                     userController.createConnection(user1, user2);
                     System.out.println("Connected!");
-                }
-                else
-                {
+                } else {
                     System.out.println("Can't Connect! Does Not meet requirements for connecting dependents!");
                 }
-            }
-            else if(choice==6)
-            {
-                String user1=null;
+            } else if (choice == 6) {
+                String user1 = null;
                 do {
                     System.out.println("Enter the Username of the dependent");
-                    user1=scWhole.nextLine();
-                    if(userController.checkUserId(user1))
-                    {
+                    user1 = scWhole.nextLine();
+                    if (userController.checkUserId(user1)) {
                         System.out.println("Invalid Id. Please enter a valid ID");
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
-                }while(true);
-                if(!userController.isDependent(user1))
-                {
+                } while (true);
+                if (!userController.isDependent(user1)) {
                     System.out.println("Sorry! The user is not a dependent");
-                }
-                else
-                {
+                } else {
                     ArrayList<String> parents = new ArrayList<>();
-                    parents= userController.findParents(user1);
+                    parents = userController.findParents(user1);
                     System.out.println(parents.toString());
                 }
 
-            }
-            else if(choice==7)
-            {
-                String user1=null;
+            } else if (choice == 7) {
+                String user1 = null;
                 do {
                     System.out.println("Enter the Username");
-                    user1=scWhole.nextLine();
-                    if(userController.checkUserId(user1))
-                    {
+                    user1 = scWhole.nextLine();
+                    if (userController.checkUserId(user1)) {
                         System.out.println("Invalid Id. Please enter a valid ID");
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
-                }while(true);
-                if(userController.isDependent(user1))
-                {
+                } while (true);
+                if (userController.isDependent(user1)) {
                     System.out.println("Sorry! The user is a dependent");
-                }
-                else
-                {
+                } else {
                     ArrayList<String> parents = new ArrayList<>();
-                    parents= userController.findChildren(user1);
-                    if(parents.size()>0)
+                    parents = userController.findChildren(user1);
+                    if (parents.size() > 0)
                         System.out.println(parents.toString());
                     else
                         System.out.println("No children exists for the parent");
                 }
 
-            }
-            else if(choice==8)
-            {
-                ArrayList<User> userList =new ArrayList<>();
-                userList= userController.listAllUsers();
-                if(userList.size()>0)
-                {
-                    System.out.printf("%-30s","Name");
-                    System.out.printf("%-20s","Age");
-                    System.out.printf("%-30s","Status");
-                    System.out.printf("%-30s","Profile Picture");
+            } else if (choice == 8) {
+                ArrayList<User> userList = new ArrayList<>();
+                userList = userController.listAllUsers();
+                if (userList.size() > 0) {
+                    System.out.printf("%-30s", "Name");
+                    System.out.printf("%-20s", "Age");
+                    System.out.printf("%-30s", "Status");
+                    System.out.printf("%-30s", "Profile Picture");
 
-                    for(User user:userList)
-                    {
+                    for (User user : userList) {
                         System.out.println();
-                        System.out.printf("%-30s",user.getName());
-                        System.out.printf("%-20s",user.getAge());
-                        System.out.printf("%-30s",user.getStatus());
-                        System.out.printf("%-30s",user.getDisplay_picture());
+                        System.out.printf("%-30s", user.getName());
+                        System.out.printf("%-20s", user.getAge());
+                        System.out.printf("%-30s", user.getStatus());
+                        System.out.printf("%-30s", user.getDisplay_picture());
                     }
                     System.out.println();
-                }
-                else
-                {
+                } else {
                     System.out.println("No User found");
                 }
-            }
-            else if(choice == 9)
-            {
-                String user1=null;
+            } else if (choice == 9) {
+                String user1 = null;
                 do {
                     System.out.println("Enter the Username");
-                    user1=scWhole.nextLine();
-                    if(userController.checkUserId(user1))
-                    {
+                    user1 = scWhole.nextLine();
+                    if (userController.checkUserId(user1)) {
                         System.out.println("Invalid Id. Please enter a valid ID");
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
-                }while(true);
-                User updateUser=userController.searchUser(user1);
+                } while (true);
+                User updateUser = userController.searchUser(user1);
                 System.out.println("Enter the Status");
                 updateUser.setStatus(scWhole.nextLine());
                 System.out.println("Enter the Display Profile");
                 updateUser.setDisplay_picture(scWhole.nextLine());
                 userController.updateUser(updateUser);
                 System.out.println("Successfully Updated!");
-            }
-            else
-            {
+            } else {
                 return;
             }
+        }
 
         }
+       catch (InputMismatchException e)
+       {
+           System.out.println("Invalid Input");
+       }
+       catch(Exception e)
+       {
+           System.out.println("Exception ");
+       }
     }
 }
