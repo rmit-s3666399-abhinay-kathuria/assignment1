@@ -126,7 +126,125 @@ public class UserProfileDAO {
         return true;
     }
 
+    public User searchUser(String name) {
 
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+        User user=null;
+        try {
+            String query="select * from User_Profile where trim(lower(name))= ?";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,   name.toLowerCase());
+            ResultSet rs=pst.executeQuery();
+
+            while(rs.next())
+            {
+
+
+                if( rs.getInt(3)>16)
+                {
+                    user=new Adults();
+                    user.setName(rs.getString(1));
+                    user.setStatus(rs.getString(2));
+                    user.setAge(rs.getInt(3));
+                    user.setDisplay_picture(rs.getString(4));
+
+                }
+                else
+                {
+                    user=new Dependent();
+                    user.setName(rs.getString(1));
+                    user.setStatus(rs.getString(2));
+                    user.setAge(rs.getInt(3));
+                    user.setDisplay_picture(rs.getString(4));
+                }
+            }
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
+    public ArrayList<String> findFriends(String name) {
+
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+        ArrayList<String> friendList=new ArrayList<>();
+        try {
+            String query="select u.name from connections c , User_Profile u where c.name=? and c.friend_name=u.name\n" +
+                    "Union\n" +
+                    "select u.name from connections c , User_Profile u where c.friend_name=? and c.name=u.name ";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1, name);
+            pst.setString(2, name);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next())
+            {
+               friendList.add( rs.getString(1));
+            }
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return friendList;
+    }
+
+    public boolean checkInDependents(String userParent1) {
+
+        Connection conn= SQLiteJDBCDriverConnection.connect();
+
+        try {
+            String query="select count(*) from dependents where lower(parent_name1)=? or lower(parent_name2) = ? ";
+            PreparedStatement pst=conn.prepareStatement(query);
+            pst.setString(1,userParent1.toLowerCase());
+            pst.setString(2,userParent1.toLowerCase());
+            ResultSet rs=pst.executeQuery();
+            if(rs.next())
+            {
+                if(rs.getInt(1)>0) {
+                    return false;
+                }
+            }
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
+   
     public void createTable() {
         Connection conn= SQLiteJDBCDriverConnection.connect();
        if(conn==null)
@@ -174,6 +292,7 @@ public class UserProfileDAO {
             e.printStackTrace();
         }
     }
+
 
 }
 
